@@ -1,0 +1,21 @@
+# Nuovo: scala qotd da 1 a 3 pod quando la CPU media supera il 50% della request (cioè 10m)
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: qotd
+  labels:
+    app: qotd
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: qotd
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50

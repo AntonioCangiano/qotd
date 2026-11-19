@@ -1,24 +1,17 @@
+# Sostituisce k8s/service.yaml: ClusterIP (la Route basta per l'esterno, NodePort non serve)
+# e solo la porta che l'app usa davvero
 apiVersion: v1
 kind: Service
 metadata:
+  name: qotd
   labels:
     app: qotd
-  name: qotd
 spec:
+  type: ClusterIP
+  selector:
+    app: qotd
   ports:
   - name: 10000-tcp
     port: 10000
-    protocol: TCP
     targetPort: 10000
-  - name: 8443-tcp
-    port: 8443
     protocol: TCP
-    targetPort: 8443
-  - name: 8778-tcp
-    port: 8778
-    protocol: TCP
-    targetPort: 8778
-  selector:
-    app: qotd
-  sessionAffinity: None
-  type: NodePort
