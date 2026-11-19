@@ -1,16 +1,12 @@
-# Sostituisce k8s/deploymentconfig.yaml (DeploymentConfig è deprecato da OpenShift 4.14)
+# Versione DevSecOps: niente annotazione image trigger, il tag SHA lo mette la pipeline
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: qotd
   labels:
     app: qotd
-  annotations:
-    # Equivalente moderno del trigger ImageChange del DeploymentConfig:
-    # quando cambia l'ImageStreamTag qotd:latest, OpenShift aggiorna l'immagine del container
-    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"qotd:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"qotd\")].image"}]'
 spec:
-  replicas: 1                      # il punto di partenza; poi decide l'HPA
+  # niente "replicas": le decide l HPA (se ci fosse, ogni deploy le riporterebbe a 1)
   selector:
     matchLabels:
       app: qotd
