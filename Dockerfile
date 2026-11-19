@@ -1,7 +1,7 @@
 # DA USARE SOLO SE LO SCAN TRIVY BLOCCA LA PIPELINE.
 # Multi-stage: si compila nell'immagine golang (grande, con molti pacchetti)
 # ma si spedisce solo il binario su una base minima Red Hat.
-FROM docker.io/library/golang:1.23 AS build
+FROM docker.io/library/golang:1.27 AS build
 WORKDIR /app
 COPY *.go ./
 RUN go mod init qotd && go get github.com/gorilla/mux github.com/gorilla/handlers \
